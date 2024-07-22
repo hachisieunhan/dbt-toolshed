@@ -1,0 +1,29 @@
+version: 2
+
+macros:
+  - name: drop_pr_schemas
+    description: |
+      This macro drops all `dbt_cloud_pr_{job_id}_{pr_no}` in which pr_no <= pr_number across GCP projects used by a dbt project.
+      Example: dbt run-operation drop_pr_schemas --args '{"job_id": "131953", "pr_number": 41, "dry_run": False}'
+    arguments:
+      - name: job_id
+        description: the dbt Cloud CI job id
+      - name: pr_number
+        description: the Github PR number
+
+  - name: drop_pr_schemas_per_gcp_project
+    description: |
+      This macro gets all the dataset of the GCP project id that starts with `dbt_cloud_pr_{job_id}_{pr_no}` in which pr_no <= pr_number and drops them all.
+    arguments:
+      - name: gcp_project_id
+        description: GCP project id
+      - name: job_id
+        description: the dbt Cloud CI job id
+      - name: pr_number
+        description: the Github PR number
+      - name: region
+        description: default at region-eu
+
+  - name: get_gcp_projects
+    description: |
+      This macro gets all GCP projects that a dbt project writes models/seeds/snapshots to.
